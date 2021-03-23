@@ -31,4 +31,35 @@ CREATE TABLE "users_to_orders"(
 /*  Посчитать кол-во телефонов, которые были проданы  */
 SELECT sum(quantity)
 FROM phones_to_orders;
-/*  */
+
+/* количество телефонов на складе */
+SELECT sum(quantity)
+FROM "phones";
+
+/* средняя цена телефонов на складе */
+SELECT avg(price)
+FROM "phones";
+
+/* средняя цена каждого бренда на складе */
+SELECT avg(price), "brand"  
+FROM "phones"
+GROUP BY "brand";
+
+/* стоимость всех телефонов в диапазоне от 10К до 20К */
+
+SELECT sum(price*quantity) AS "Sum", "brand"  
+FROM "phones"
+WHERE "price" BETWEEN 10000 AND 20000
+GROUP BY "brand";
+
+/* Количество моделей каждого бренда */
+
+SELECT count(model),"brand"  
+FROM "phones"
+GROUP BY "brand";
+
+/* Узнать каких model телефонов осталось меньше всего*/
+
+  SELECT min(quantity), "model", "brand"  
+  FROM "phones"
+  GROUP BY "brand","model" ;
