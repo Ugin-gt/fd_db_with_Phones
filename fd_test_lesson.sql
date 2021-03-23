@@ -63,3 +63,19 @@ GROUP BY "brand";
   SELECT min(quantity), "model", "brand"  
   FROM "phones"
   GROUP BY "brand","model" ;
+
+/* Узнать каких телефонов какого бренда осталось меньше всего*/
+
+ SELECT sum(quantity) as "sum_Quantity", "brand" FROM "phones" 
+ GROUP BY "brand"
+ ORDER BY "sum_Quantity", "brand";
+
+/* Сортировать пользователей по возрасту и по имени*/
+ SELECT "firstName", EXTRACT('year' FROM age("birthday")) AS "age" FROM "users"
+ ORDER BY "age", "firstName";
+
+ /* Фильтрация телефонов по количеству свыше 70К и бренду*/
+SELECT sum(quantity) as "sum_Quantity", "brand" FROM "phones" 
+GROUP BY "brand"
+HAVING sum(quantity) >80000
+ORDER BY "sum_Quantity", "brand";
