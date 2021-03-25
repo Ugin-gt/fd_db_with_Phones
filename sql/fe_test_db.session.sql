@@ -1,4 +1,4 @@
-DROP TABLE "users";
+DROP TABLE "from_node_js";
 /*  */
 CREATE TABLE "users" (
   id serial PRIMARY KEY,
