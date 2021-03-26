@@ -8,16 +8,7 @@
  <= - REFERENCES
  
  */
- CREATE TABLE "TASKS" (
-  id serial PRIMARY KEY,
-  "userId" int REFERENCES "users"(id),
-  "Task" varchar(256) NOT NULL,
-  "createdAt" timestamp NOT NULL DEFAULT current_timestamp,
-  "isDone" BOOLEAN NOT NULL
-);
 
-INSERT INTO "TASKS" ("userId", "Task", "isDone")
-VALUES ( 2, 'Say my Name', false);
 -- 
 CREATE TABLE "phones"(
   id serial PRIMARY KEY,
@@ -131,9 +122,7 @@ GROUP BY p."brand",
   p."model"
 ORDER BY "Most_popular" DESC
 LIMIT 1;
-
 /* Извлечь пользователей и кол-во моделей которые они покупали*/
-
 SELECT o."userId",
   o.id as "Order_ID",
   count(pto."phoneId") as "Amount models"
@@ -143,9 +132,7 @@ GROUP BY o."userId",
   "Order_ID"
 ORDER BY o."userId",
   "Amount models" DESC;
-
 /* Извлечь все заказы стоимостью выше среднего чека*/
-
 WITH order_total_cost AS (
   SELECT pto."orderId",
     sum(pto.quantity * p.price) as "Order_Cost"
@@ -160,9 +147,7 @@ WHERE otc."Order_Cost" > (
     SELECT avg(otc."Order_Cost")
     FROM order_total_cost AS otc
   );
-
 /* Извлечь всех пользователей, у которых кол-во заказов выше среднего*/
-
 WITH users_total_orders AS (
   SELECT u.id,
     u."firstName",
@@ -178,3 +163,15 @@ WHERE uto."Order_Count" > (
     SELECT avg(uto."Order_Count")
     FROM users_total_orders AS uto
   );
+
+  */ создать таблицу таск и наполнить ее */
+
+  CREATE TABLE "TASKS" (
+  id serial PRIMARY KEY,
+  "userId" int REFERENCES "users"(id),
+  "Task" varchar(256) NOT NULL,
+  "createdAt" timestamp NOT NULL DEFAULT current_timestamp,
+  "isDone" BOOLEAN NOT NULL
+);
+INSERT INTO "TASKS" ("userId", "Task", "isDone")
+VALUES (2, 'Say my Name', false);
