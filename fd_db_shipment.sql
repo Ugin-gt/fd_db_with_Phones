@@ -45,11 +45,13 @@ CREATE TABLE "shipment"(
 );
 /*  */
 CREATE TABLE "orders_to_shipment"(
+  "o_to_ship_id" serial PRIMARY KEY,
   "orderId" int REFERENCES "cast_orders"(order_id),
   "shipmentId" int REFERENCES "shipment"(shipment_id)
 );
 /*  */
 CREATE TABLE "products_to_shipment"(
+  "pr_to_ship_id" serial PRIMARY KEY,
   "productId" int REFERENCES "products"(code_id),
   "shipmentId" int REFERENCES "shipment"(shipment_id)
 );
