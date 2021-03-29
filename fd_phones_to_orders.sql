@@ -8,7 +8,6 @@
  <= - REFERENCES
  
  */
-
 -- 
 CREATE TABLE "phones"(
   id serial PRIMARY KEY,
@@ -163,10 +162,7 @@ WHERE uto."Order_Count" > (
     SELECT avg(uto."Order_Count")
     FROM users_total_orders AS uto
   );
-
-  */ создать таблицу таск и наполнить ее */
-
-  CREATE TABLE "TASKS" (
+* / создать таблицу таск и наполнить ее * / CREATE TABLE "TASKS" (
   id serial PRIMARY KEY,
   "userId" int REFERENCES "users"(id),
   "Task" varchar(256) NOT NULL,
@@ -175,3 +171,58 @@ WHERE uto."Order_Count" > (
 );
 INSERT INTO "TASKS" ("userId", "Task", "isDone")
 VALUES (2, 'Say my Name', false);
+/*     */
+SELECT "brand",
+  "model",
+  (
+    CASE
+      WHEN "brand" ILIKE 'iphone' THEN 'Apple'
+      ELSE 'Unknow'
+    END
+  ) AS "manifacture"
+FROM "phones";
+/*     */
+SELECT "brand",
+  "model",
+  "price",
+  (
+    CASE
+      WHEN "price" < 10000 THEN 'good choice'
+      WHEN "price" > 20000 THEN 'flagman'
+      ELSE 'middle'
+    END
+  ) AS "Point_cost"
+FROM "phones";
+/*     */
+SELECT u.id,
+  u."firstName",
+  u."email",
+  count(o.id) AS "Order_Quantity",
+  (
+    CASE
+      WHEN count(o.id) >= 5 THEN 'good buyer'
+      WHEN count(o.id) >= 2 THEN 'active buyer'
+      ELSE 'buyer'
+    END
+  ) AS "Buyer_status"
+FROM "orders" AS o
+  JOIN "users" as u ON u.id = o."userId"
+GROUP BY u.id;
+
+/*     */
+CREATE OR REPLACE VIEW "Transform_users" AS (
+  SELECT id,
+    concat("firstName", ' ', "lastName"),
+    EXTRACT (
+      'year'
+      FROM age("birthday")
+    ) as "User_age",
+    (
+      CASE
+        WHEN "isMale" THEN 'Male'
+        WHEN NOT "isMale" THEN 'Female'
+        ELSE 'Others'
+      END
+    ) AS "Gender", "email"
+  FROM users
+);
