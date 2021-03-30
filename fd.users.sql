@@ -74,13 +74,11 @@ WHERE "id" IN (123, 534, 210, 1000, 510, 348);
 /*  */
 /* phones: brand, model, price, quantity */
 /* users can buy phones */
-
 SELECT "id",
   char_length(concat("firstName", '', "lastName")) as "L"
 FROM "users"
 ORDER by "L" DESC
 LIMIT 1;
-
 * / Посчитать кол - во юзеров c количеством символов в полном имени менее 18 * /
 SELECT char_length(concat("firstName", '', "lastName")) as "name_length",
   count (*) as "Amount"
@@ -88,12 +86,36 @@ FROM "users"
 WHERE char_length(concat("firstName", '', "lastName")) < 18
 GROUP by "name_length"
 ORDER by "Amount" DESC;
-
-* / Посчитать кол-во email юзеров, начинающиеся на "m" c количеством символов менее 25 * /
-
+* / Посчитать кол - во email юзеров,
+начинающиеся на "m" c количеством символов менее 25 * /
 SELECT char_length("email") as "email_length",
   count (*) as "Amount"
 FROM "users"
-WHERE "email" LIKE 'm%' AND char_length("email") >= 25
+WHERE "email" LIKE 'm%'
+  AND char_length("email") >= 25
 GROUP by "email_length"
 ORDER by "Amount" DESC;
+* / запрос на вывод таблицы отображения пола пользователя * /
+SELECT id,
+  "email",
+  (
+    CASE
+      WHEN "isMale" THEN 'Male'
+      WHEN NOT "isMale" THEN 'Female'
+      ELSE 'not specified'
+    END
+  ) AS "Gender",
+  "isMale"
+FROM "users";
+* / запрос на вывод совершеннолетия пользователя * /
+SELECT *,
+  (
+    CASE
+      WHEN EXTRACT(
+        year
+        FROM age("birthday")
+      ) >= 25 THEN 'Adult'
+      ELSE 'Not adult'
+    END
+  ) AS "Is_Adult"
+FROM "users";

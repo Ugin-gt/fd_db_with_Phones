@@ -171,7 +171,7 @@ WHERE uto."Order_Count" > (
 );
 INSERT INTO "TASKS" ("userId", "Task", "isDone")
 VALUES (2, 'Say my Name', false);
-/*     */
+/* Если бренд Iphone в колонке производитель добавить Apple*/
 SELECT "brand",
   "model",
   (
@@ -179,9 +179,10 @@ SELECT "brand",
       WHEN "brand" ILIKE 'iphone' THEN 'Apple'
       ELSE 'Unknow'
     END
-  ) AS "manifacture"
+  ) AS "manufacturer"
 FROM "phones";
-/*     */
+/* Сортировка цен на телефоны по категориям < 10K,
+between 10K and 20K, >20K*/
 SELECT "brand",
   "model",
   "price",
@@ -193,7 +194,8 @@ SELECT "brand",
     END
   ) AS "Point_cost"
 FROM "phones";
-/*     */
+/*  Отследить по количеству заказов активность покупателей 
+от 5 - постоянный покупатель, от 2 - активный, и обычный*/
 SELECT u.id,
   u."firstName",
   u."email",
@@ -206,23 +208,23 @@ SELECT u.id,
     END
   ) AS "Buyer_status"
 FROM "orders" AS o
-  JOIN "users" as u ON u.id = o."userId"
+  JOIN "users" AS u ON u.id = o."userId"
 GROUP BY u.id;
-
 /*     */
 CREATE OR REPLACE VIEW "Transform_users" AS (
-  SELECT id,
-    concat("firstName", ' ', "lastName"),
-    EXTRACT (
-      'year'
-      FROM age("birthday")
-    ) as "User_age",
-    (
-      CASE
-        WHEN "isMale" THEN 'Male'
-        WHEN NOT "isMale" THEN 'Female'
-        ELSE 'Others'
-      END
-    ) AS "Gender", "email"
-  FROM users
-);
+    SELECT id,
+      concat("firstName", ' ', "lastName"),
+      EXTRACT (
+        'year'
+        FROM age("birthday")
+      ) as "User_age",
+      (
+        CASE
+          WHEN "isMale" THEN 'Male'
+          WHEN NOT "isMale" THEN 'Female'
+          ELSE 'Others'
+        END
+      ) AS "Gender",
+      "email"
+    FROM users
+  );
